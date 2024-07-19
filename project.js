@@ -10,12 +10,11 @@ const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 const width = 125; //Only adjust if necessary
 const height = 125;
-const scale = width / gridWidth + 1.5
 setDocDimensions(width, height);
 
 //Title code - BATTLESHIP
 
-let letters = { //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
+const letters = { //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
   "a": `sa$90,f$2,r$90,f$2,r$90,f$2,u,sa$90,f$2,d,l$30,f$2,l$120,f$2`,
   "b": `sa$90,f$4,r$90,f$1,arc$180:1,f$1,r$180,f$1,arc$180:1,f$1`,
   "c": `sa$90,u,r$90,f$2,r$180,d,arc$180:2`,
@@ -45,17 +44,17 @@ let letters = { //tysm Scott C who made the following letter commands for his cr
 }
 
 function drawLetter(letter, posx, posy){ //Text engine essentially
-  const turtle = new bt.Turtle()
+  const turtle = new bt.Turtle();
   let commands = letters[letter].split(',');
   turtle.jump([posx, posy]);
-  for (const command in commands){
+  for (const command of commands){
     let instruct = command.split('$');
     switch(instruct[0]){
       case "sa":
-        turtle.setAngle(parseFloat(instruct[1])*scale);
+        turtle.setAngle(parseFloat(instruct[1]));
         break;
       case "f":
-        turtle.forward(parseFloat(instruct[1])*scale);
+        turtle.forward(parseFloat(instruct[1]));
         break;
       case "r":
         turtle.right(parseFloat(instruct[1]));
@@ -78,8 +77,13 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
   return turtle.position;
 }
 
-drawLetter("a", 19,12);
-
+let text = "battleship"
+text = text.split('')
+let lastCordX = 20
+let lastCordY = 100
+for(const letter of text){
+  [lastCordX, lastCordY] = [drawLetter(letter, lastCordX + 28, lastCordY)];
+}
 const frame = [];
 
 
