@@ -8,7 +8,7 @@ const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 //Changeable parameters over
 
-const width = 125; //Only adjust if necessary, might screw things up
+const width = 125; //Only adjust if necessary, might screw things idk man
 const height = 125;
 let scale = 2;
 setDocDimensions(width, height);
@@ -81,7 +81,7 @@ const letters = { //tysm Scott C who made the following letter commands for his 
 }
 
 let text = "battleship";
-let X = 0; //Battleship text width set 
+let X = width/2 - 25;
 let Y = height - 10;
 let increment = 0;
 for(const letter of text){
@@ -101,9 +101,30 @@ const mainframe = [ //Main outer grid
 ];
 
 function drawLine(pointA, pointB){ //Lazy function and also pointA and B are arrays like [number, number]
-  const turtle = bt.Turtle();
+  const turtle = new bt.Turtle();
   turtle.jump(pointA);
   turtle.goTo(pointB);
+  drawLines(turtle.lines());
+}
+
+const gapx = (width-10)/(gridWidth+1);
+const gapy = (height-20)/(gridWidth+1);
+
+let A = [5, height-15]
+let B = [5, 5]
+//Draws columns
+for(let i=0; i < gridWidth + 1; i++){
+  drawLine(A, B);
+  A[0] += gapx;
+  B[0] += gapx;
+}
+
+A = [5, height-15]
+B = [width-5, height-15]
+for(let i=0; i < gridWidth + 1; i++){
+  drawLine(A, B);
+  A[1] -= gapy;
+  B[1] -= gapy;
 }
 
 finalLines.push(mainframe);
