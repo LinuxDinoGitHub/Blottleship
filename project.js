@@ -10,12 +10,12 @@ const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 const width = 125; //Only adjust if necessary
 const height = 125;
+const scale = 2;
 setDocDimensions(width, height);
 
 //Title code - BATTLESHIP
-
-
-
+//tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
+//Text engine (This part I wrote myself, I only copied the commands for the object)
 function drawLetter(letter, posx, posy){ //Text engine essentially
   const turtle = new bt.Turtle();
   let commands = letters[letter].split(',');
@@ -27,7 +27,7 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
         turtle.setAngle(parseFloat(instruct[1]));
         break;
       case "f":
-        turtle.forward(parseFloat(instruct[1]));
+        turtle.forward(parseFloat(instruct[1])*scale);
         break;
       case "r":
         turtle.right(parseFloat(instruct[1]));
@@ -36,7 +36,7 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
         turtle.left(parseFloat(instruct[1]));
         break;
       case "arc":
-        turtle.arc(instruct[1].split(":")[0], instruct[1].split(":")[1]);
+        turtle.arc(parseFloat(instruct[1].split(":")[0]), parseFloat(instruct[1].split(":")[1])*scale);
         break;
       case "u":
         turtle.up();
@@ -47,13 +47,11 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
     }
   }
   drawLines(turtle.lines());
-  console.log(turtle.position);
-  return turtle.position;
 }
 
 const letters = { //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
   "a": `sa$90,f$2,r$90,f$2,r$90,f$2,u,sa$90,f$2,d,l$30,f$2,l$120,f$2`,
-  "b": `sa$90,f$4,r$90,f$1,arc$180:1,f$1,r$180,f$1,arc$180:1,f$1`,
+  "b": `sa$90,f$4,r$90,f$1,arc$-180:1,f$1,r$180,f$1,arc$-180:1,f$1`,
   "c": `sa$90,u,r$90,f$2,r$180,d,arc$180:2`,
   "d": `sa$90,f$4,r$90,arc$180:2`,
   "e": `sa$90,f$4,r$90,f$2,u,f$-2,r$90,f$2,l$90,d,f$2,u,f$-2,r$90,f$2,l$90,d,f$2`,
@@ -67,10 +65,10 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   "m": `sa$90,f$4,sa$0,r$71.57,f$3.162,sa$0,l$71.57,f$3.162,sa$0,r$90,f$4`,
   "n": `sa$90,f$4,r$153.43,f$4.47,l$153.43,f$4`,
   "o": `sa$90,u,f$1,d,f$2,arc$180:1,f$2,arc$180:1`,
-  "p": `sa$90,f$4,r$90,f$1,arc$180:1,f$1`,
+  "p": `sa$90,f$4,r$90,f$1,arc$-180:1,f$1`,
   "q": `sa$90,u,f$1,d,f$2,arc$180:1,f$2,arc$180:1,u,r$90,f$1,r$45,d,f$1.414`,
   "r": `sa$90,f$4,r$90,f$1,arc$180:1,f$1,sa$-45,f$2.8284`,
-  "s": `f$1,arc$-180:1,arc$180:1,f$1`,
+  "s": `f$1,arc$180:1,arc$-180:1,f$1`,
   "t": `u,f$1,sa$90,d,f$4,u,r$90,f$-1,d,f$2`,
   "u": `sa$90,u,f$4,sa$-90,d,f$3,arc$-180:1,f$3`,
   "v": `sa$90,u,f$4,r$165.96,d,f$4.12,l$151.93,f$4.12`,
@@ -80,17 +78,16 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   "z": `u,f$2,d,f$-2,l$63.44,f$4.47,r$63.44,f$-2`,
 }
 
-let text = "battleship"
-text = text.split('')
-let lastCordX = 20
-let lastCordY = 100
-let currCordX = 20
-let currCordY = 100
+let text = "battleship";
+let X = 0;
+let Y = 115;
+let increment = 0;
 for(const letter of text){
-  [lastCordX, lastCordY] = [currCordX, currCordY];
-  console.log("COords",lastCordX, lastCordY);
-  [currCordX, currCordY] = drawLetter(letter, lastCordX, lastCordY);
+  drawLetter(letter, X + increment, Y);
+  increment += 5
 }
+
+//Making the grid and letters
 const frame = [];
 
 
