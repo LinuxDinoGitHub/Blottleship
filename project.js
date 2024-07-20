@@ -3,10 +3,10 @@
 const empty = false; //Set to true for the boats, otherwise false for mapping the opponents ships
 //Note that the grid still exists when it's true and can be used to map at the same time
 
-const gridWidth = 9; //Adjust to change board size
+const gridWidth = 10; //Adjust to change board size
 const boatNum = 5; //Adjust to increase or decrease the number of boats
 
-const scale = gridWidth >= 9? 1 : 2; //Adjust to change text size at a certain breaking point
+let scale = gridWidth >= 9? (gridWidth>=15? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
 //Changeable parameters OVER
 
 const width = 125; //Only adjust if necessary, might screw things up idk man
@@ -23,6 +23,7 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
   if(parseInt(letter)){
     if(letter >= 10){
       handleNumber(letter, posx, posy);
+      return;
     }
   }
   var l = letter.toString();
@@ -60,12 +61,12 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
 function handleNumber(letter, posx, posy){
   let x = posx;
   let y = posy;
-  const increment = scale;
-  for(let digit of letter.toString().split('')){
-    drawLetter(digit, x, y);
-    x += scale;
-    y += scale;
+  const increment = scale*3;
+  for(const digit of letter.toString()){
+    drawLetter(digit, x-scale*1.5, y);
+    x += increment;
   }
+  return false; //Just tells it to skip everything
 };
 
 const letters = { //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
@@ -95,7 +96,7 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   "x": `sa$90,u,f$4,r$153.44,d,f$4.47,u,l$153.44,f$4,l$153.44,d,f$4.47`,
   "y": `u,f$1,sa$90,d,f$2.5,r$33.69,f$1.8,u,f$-1.8,l$67.38,d,f$1.8`,
   "z": `u,f$2,d,f$-2,l$63.44,f$4.47,r$63.44,f$-2`,
-  ["0"]: `sa$90,u,f$1,d,f$2,arc$180:1,f$2,arc$180:1,u,f$2,arc$45:1,sa$-66.80,d,f$3.675`,
+  ["0"]: `sa$90,u,f$1,d,f$2,arc$-180:1,f$2,arc$-180:1,u,f$2,arc$-45:1,sa$-66.80,d,f$3.675`,
   ["1"]: `sa$0,u,f$1,d,sa$90,f$4,l$150,f$2`,
   ["2"]: `u,f$2,r$180,d,f$2,sa$90,arc$-90:1,arc$90:1,f$1,arc$180:1`,
   ["3"]: `sa$90,u,f$4,r$90,d,f$1,arc$-180:1,f$1,r$180,f$1,arc$-180:1,f$1`,
@@ -107,6 +108,8 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   ["9"]: `u,sa$90,f$2,r$90,f$1,d,arc$360:1,u,arc$90:1,f$0.87,d,r$180,f$4`,
 }
 
+let tempScale = scale;
+scale = 2;
 let text = "blottleship";
 let X = width/2 - 27;
 let Y = height - 10;
@@ -115,6 +118,7 @@ for(const letter of text){
   drawLetter(letter, X + increment, Y);
   increment += 5
 }
+scale = tempScale;
 
 //Making the grid and letters
 const finalLines = [];
@@ -165,6 +169,7 @@ alphabet = alphabet.slice(0,gridWidth);
 //height-15 = start of grid i think
 X = 5 + gapx;
 Y = height-15 - gapy;
+
 let xcp = gapx/2 - scale; //X center padding
 let ycp = gapy/2 + scale*2; //Y center padding
 
