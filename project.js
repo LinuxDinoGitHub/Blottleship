@@ -8,12 +8,14 @@ const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 //Changeable parameters over
 
-const width = 125; //Only adjust if necessary
+const width = 125; //Only adjust if necessary, might screw things up
 const height = 125;
-const scale = 2;
+let scale = 2;
 setDocDimensions(width, height);
 
+
 //Title code - BATTLESHIP
+
 //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
 //Text engine (This part I wrote myself, I only copied the commands for the object)
 function drawLetter(letter, posx, posy){ //Text engine essentially
@@ -79,8 +81,8 @@ const letters = { //tysm Scott C who made the following letter commands for his 
 }
 
 let text = "battleship";
-let X = 0;
-let Y = 115;
+let X = 0; //Battleship text width set 
+let Y = height - 10;
 let increment = 0;
 for(const letter of text){
   drawLetter(letter, X + increment, Y);
@@ -88,7 +90,22 @@ for(const letter of text){
 }
 
 //Making the grid and letters
-const frame = [];
+const finalLines = [];
 
+const mainframe = [ //Main outer grid
+  [5, height-15],
+  [width-5, height-15],
+  [width-5, 5],
+  [5, 5],
+  [5, height-15]
+];
 
-drawLines(frame);
+function drawLine(pointA, pointB){ //Lazy function and also pointA and B are arrays like [number, number]
+  const turtle = bt.Turtle();
+  turtle.jump(pointA);
+  turtle.goTo(pointB);
+}
+
+finalLines.push(mainframe);
+
+drawLines(finalLines);
