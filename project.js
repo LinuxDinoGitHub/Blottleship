@@ -3,7 +3,7 @@
 const empty = false; //Set to true for the boats, otherwise false for mapping the opponents ships
 //Note that the grid still exists when it's true and can be used to map at the same time
 
-const gridWidth = 8; //Adjust to change board size
+const gridWidth = 9; //Adjust to change board size
 const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 const scale = gridWidth >= 9? 1 : 2; //Adjust to change text size at a certain breaking point
@@ -20,8 +20,14 @@ setDocDimensions(width, height);
 //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
 //Text engine (This part I wrote myself, I only copied the commands for the object)
 function drawLetter(letter, posx, posy){ //Text engine essentially
+  if(parseInt(letter)){
+    if(letter >= 10){
+      handleNumber(letter, posx, posy);
+    }
+  }
+  var l = letter.toString();
   const turtle = new bt.Turtle();
-  let commands = letters[letter].split(',');
+  let commands = letters[l].split(',');
   turtle.jump([posx, posy]);
   for (const command of commands){
     let instruct = command.split('$');
@@ -51,6 +57,16 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
   }
   drawLines(turtle.lines());
 }
+function handleNumber(letter, posx, posy){
+  let x = posx;
+  let y = posy;
+  const increment = scale;
+  for(let digit of letter.toString().split('')){
+    drawLetter(digit, x, y);
+    x += scale;
+    y += scale;
+  }
+};
 
 const letters = { //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
   "a": `sa$90,f$2,r$90,f$2,r$90,f$2,u,sa$90,f$2,d,l$30,f$2,l$120,f$2`,
@@ -82,17 +98,17 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   ["0"]: `sa$90,u,f$1,d,f$2,arc$180:1,f$2,arc$180:1,u,f$2,arc$45:1,sa$-66.80,d,f$3.675`,
   ["1"]: `sa$0,u,f$1,d,sa$90,f$4,l$150,f$2`,
   ["2"]: `u,f$2,r$180,d,f$2,sa$90,arc$-90:1,arc$90:1,f$1,arc$180:1`,
-  ["3"]: `sa$90,u,f$4,r$90,d,f$1,arc$180:1,f$1,r$180,f$1,arc$180:1,f$1`,
+  ["3"]: `sa$90,u,f$4,r$90,d,f$1,arc$-180:1,f$1,r$180,f$1,arc$-180:1,f$1`,
   ["4"]: `u,f$2,sa$90,f$1,l$90,d,f$2,r$116.57,f$3.35,sa$-90,f$4`,
-  ["5"]: `u,sa$90,f$1,r$180,d,arc$-180:1,f$1,arc$-90:1,arc$90:1,sa$0,f$2`,
+  ["5"]: `u,sa$90,f$1,r$180,d,arc$180:1,f$1,arc$90:1,arc$-90:1,sa$0,f$2`,
   ["6"]: `u,f$1,sa$90,f$2,r$90,d,arc$-360:1,u,arc$-270:1,d,f$2,arc$-150:1`,
-  ["7"]: `u,f$2,r$180,d,f$2,sa$90,arc$-90:1,arc$90:1,f$1,arc$180:1`,
-  ["8"]: `u,f$1,d,arc$-180:1,arc$360:1,arc$-180:1`,
-  ["9"]: ``,
+  ["7"]: `sa$90,u,f$4,r$90,d,f$2,r$117,f$4.4`,
+  ["8"]: `u,f$1,d,arc$180:1,arc$-360:1,arc$180:1`,
+  ["9"]: `u,sa$90,f$2,r$90,f$1,d,arc$360:1,u,arc$90:1,f$0.87,d,r$180,f$4`,
 }
 
-let text = "battleship7";
-let X = width/2 - 25;
+let text = "blottleship";
+let X = width/2 - 27;
 let Y = height - 10;
 let increment = 0;
 for(const letter of text){
@@ -147,15 +163,19 @@ let alphabet = "abcdefghijklmnopqrstuvwxyz";
 alphabet = alphabet.slice(0,gridWidth);
 
 //height-15 = start of grid i think
-X = 5+gapx;
-Y = width-25-gapy;
-let xcp = gapx/2 + scale*2 - 5; //X center padding
-let ycp = 0; //Y center padding
-for(const letter of alphabet){
-  drawLetter(letter, 5+xcp, Y); //Draws the row letters
-  drawLetter(letter, X, width-12.5-gapy); //Draws the column letters
-  X+=gapx;
+X = 5 + gapx;
+Y = height-15 - gapy;
+let xcp = gapx/2 - scale; //X center padding
+let ycp = gapy/2 + scale*2; //Y center padding
+
+for(const letter of alphabet){ //draws letters
+  drawLetter(letter, 5+xcp, Y-ycp); //Draws the row letters
   Y-=gapy;
+};
+
+for(let i = 1; i < gridWidth+1; i++){ //draws numbers
+  drawLetter(i, X+xcp, height-15-ycp); //Draws the column letters
+  X+=gapx;
 };
 
 //Letters complete
