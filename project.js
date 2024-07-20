@@ -79,7 +79,7 @@ const letters = { //tysm Scott C who made the following letter commands for his 
   "g": `u,f$1,sa$90,f$2,r$90,d,arc$-270:1,f$2,arc$-90:1`,
   "h": `sa$90,f$4,u,f$-2,r$90,d,f$2,u,l$90,f$-2,d,f$4`,
   "i": `f$2,u,f$-1,l$90,d,f$4,r$90,u,f$-1,d,f$2`,
-  "j": `sa$90,u,f$4,r$90,d,f$2,u,f$-1,r$90,d,f$3,arc$90:1`,
+  "j": `sa$90,u,f$4,r$90,d,f$2,u,f$-1,r$90,d,f$3,arc$-90:1`,
   "k": `sa$90,f$4,u,f$-2,r$45,d,f$2.75,u,f$-2.75,r$90,d,f$2.75`,
   "l": `sa$90,u,f$4,r$180,d,f$4,l$90,f$2`,
   "m": `sa$90,f$4,sa$0,r$71.57,f$3.162,sa$0,l$71.57,f$3.162,sa$0,r$90,f$4`,
@@ -184,6 +184,44 @@ for(let i = 1; i < gridWidth+1; i++){ //draws numbers
 };
 
 //Letters complete
+
+//Drawing ships
+function parseCoords(coords, vertex){ //Vertex is coords return value: tr, br, tl, bl (top-right, ... ,bottom-left, etc.)
+  let letter = coords[0]; //Assumes it is fail proof
+  let number = coords[1];
+  //defaults to top left first and then modifies
+  let x = gapx*number + 5;
+  let y = height - 15 - gapy*alphabet.indexOf(letter);
+  switch(vertex){
+    case "tr":
+      return [x+gapx, y];
+    case "tl":
+      return [x,y];
+    case "br": //I dont think I ever used the following 2 so yall can use this as well
+      return [x, y+gapy];
+    case "bl":
+      return [x+gapx, y+gapy];
+  };
+}
+
+//This is the actual "art" part
+let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, f10 ,orientation: l, r, u ,d
+  const turtle = new bt.Turtle();
+  
+  drawLines(turtle.lines);
+};
+
+let body = (coords, orientation) => { //The body of the ship
+  
+};
+
+
+if(!empty){ //Checks if the player wants an empty sheet or not
+  //draw ship and do things
+}
+
+//End of drawing ships
+
 finalLines.push(mainframe);
 
 drawLines(finalLines);
