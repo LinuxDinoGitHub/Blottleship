@@ -187,37 +187,47 @@ for(let i = 1; i < gridWidth+1; i++){ //draws numbers
 
 //Drawing ships
 function parseCoords(coords, vertex){ //Vertex is coords return value: tr, br, tl, bl (top-right, ... ,bottom-left, etc.)
-  let letter = coords[0]; //Assumes it is fail proof
-  let number = coords[1];
+  let letter = coords.split(':')[0]; //Assumes it is fail proof
+  let number = coords.split(':')[1];
   //defaults to top left first and then modifies
   let x = gapx*number + 5;
-  let y = height - 15 - gapy*alphabet.indexOf(letter);
+  let y = height - 15 - gapy*(alphabet.indexOf(letter)+1);
   switch(vertex){
     case "tr":
       return [x+gapx, y];
     case "tl":
-      return [x,y];
-    case "br": //I dont think I ever used the following 2 so yall can use this as well
-      return [x, y+gapy];
+      return [x,y];//default
+    case "br": 
+      return [x, y-gapy];
     case "bl":
-      return [x+gapx, y+gapy];
+      return [x+gapx, y-gapy];
   };
 }
 
 //This is the actual "art" part
 let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, f10 ,orientation: l, r, u ,d
   const turtle = new bt.Turtle();
-  
-  drawLines(turtle.lines);
+  let x; //starting x position
+  let y; //starting y
+  let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
+  [x, y] = parseCoords(coords, o);
+  turtle.jump([x, y]);
+  turtle.setAngle(orientation == "l"? 180 : (orientation == "r"? 0:(orientation == "u"? 90 : 270)))
+  turtle.right(45); 
+  turtle.forward(10);//
+  drawLines(turtle.lines());
 };
 
 let body = (coords, orientation) => { //The body of the ship
   
 };
 
-
+let occupied = [];
 if(!empty){ //Checks if the player wants an empty sheet or not
-  //draw ship and do things
+  tip("a:1","r");
+  tip("f:5","l");
+  tip("e:2","d");
+  tip("b:10","u");
 }
 
 //End of drawing ships
