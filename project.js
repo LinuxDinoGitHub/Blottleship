@@ -332,11 +332,46 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
         [x1+gapx*0.35, y1-gapy*0.6],
       ]
       let rear2s = [
-        [x1+gapx*0.35, y1-gapy*0.6],
+        [
+          [x1+gapx*0.35, y1-gapy*0.8],
+          [x2-gapx*0.35, y1-gapy*0.8],
+          [x2-gapx*0.35, y1-gapy],
+          [x1+gapx*0.35, y1-gapy],
+          [x1+gapx*0.35, y1-gapy*0.8],
+        ],
+        [
+          [x1+gapx*0.35, y1-gapy*1.1],
+          [x2-gapx*0.35, y1-gapy*1.1],
+          [x2-gapx*0.35, y1-gapy*1.2],
+          [x1+gapx*0.35, y1-gapy*1.2],
+          [x1+gapx*0.35, y1-gapy*1.1],
+        ],
+        [
+          [x1+gapx*0.35, y1-gapy*1.25],
+          [x2-gapx*0.35, y1-gapy*1.25],
+          [x2-gapx*0.35, y1-gapy*1.35],
+          [x1+gapx*0.35, y1-gapy*1.35],
+          [x1+gapx*0.35, y1-gapy*1.25],
+        ],
       ]
-      finalLines.push(frame, rear, rear2, rear2s);
+      let rear3 = [
+        [x1+gapx*0.35, y1-gapy*1.7],
+        [x2-gapx*0.35, y1-gapy*1.7],
+        [x2-gapx*0.35,y1-gapy*(length+0.5)],
+        [x1+gapx*0.35, y1-gapy*(length+0.5)],
+        [x1+gapx*0.35, y1-gapy*1.7],
+      ] //Bounds: x1+gapx*0.35 and y1-gapy*(length+0.5)
+      let start = [x1+gapx*0.35, y1-gapy*1.7];
+      let end = [x2-gapx*0.35, y1-gapy*1.7];
+      const increment = ((y1-gapy*(length+0.5))-(y1-gapy*1.7))/20;
+      for(let i = 0; i<20; i++){
+        start[1] += increment;
+        end[1] += increment;
+        drawLine(start,end);
+      }
+      finalLines.push(frame, rear, rear2, rear2s[0], rear2s[1], rear2s[2], rear3);
     }
-    else{
+    else{ //for horizontal
      let frame = [
         [x1, y1],
         [x1, y2],
@@ -348,9 +383,68 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
         [x1+gapx*0.1, y1+gapy*0.3],
         [x1, y1],
       ];
-      finalLines.push(frame);
-    };
-
+    let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
+      [x1+gapx*0.2,y1-gapy*0.1],
+      [x1+gapx*0.2,y2+gapy*0.1],
+      [x1+gapx*0.4,y2+gapy*0.1],
+      [x1+gapx*0.4,y1-gapy*0.1],
+      [x1+gapx*0.2,y1-gapy*0.1]
+    ];
+    let rear2 = [
+      [x1+gapx*0.6,y1-gapy*0.35],
+      [x1+gapx*0.7,y1-gapy*0.2], 
+      [x1+gapx*1.3,y1-gapy*0.2], 
+      [x1+gapx*1.6,y1-gapy*0.1], 
+      [x1+gapx*1.6,y1-gapy*0.3], 
+      [x1+gapx*1.45,y1-gapy*0.35],
+      [x1+gapx*1.45,y2+gapy*0.35],
+      [x1+gapx*1.6,y2+gapy*0.3], 
+      [x1+gapx*1.6,y2+gapy*0.1], 
+      [x1+gapx*1.3,y2+gapy*0.2], 
+      [x1+gapx*0.7,y2+gapy*0.2], 
+      [x1+gapx*0.6,y2+gapy*0.35],
+      [x1+gapx*0.6,y1-gapy*0.35],
+    ]
+    let rear2s = [
+      [
+        [x1+gapx*0.8,y1-gapy*0.35],
+        [x1+gapx*0.8,y2+gapy*0.35],
+        [x1+gapx,y2+gapy*0.35],
+        [x1+gapx,y1-gapy*0.35],
+        [x1+gapx*0.8,y1-gapy*0.35],
+      ],
+      [
+        [x1+gapx*1.1,y1-gapy*0.35], 
+        [x1+gapx*1.1,y2+gapy*0.35], 
+        [x1+gapx*1.2,y2+gapy*0.35], 
+        [x1+gapx*1.2,y1-gapy*0.35], 
+        [x1+gapx*1.1,y1-gapy*0.35], 
+      ],
+      [
+        [x1+gapx*1.25,y1-gapy*0.35], 
+        [x1+gapx*1.25,y2+gapy*0.35], 
+        [x1+gapx*1.35,y2+gapy*0.35], 
+        [x1+gapx*1.35,y1-gapy*0.35], 
+        [x1+gapx*1.25,y1-gapy*0.35], 
+      ],
+    ]
+    let rear3 = [
+      [x1+gapx*1.7,y1-gapy*0.35],
+      [x1+gapx*1.7,y2+gapy*0.35],
+      [x1+gapx*(length + 0.5),y2+gapy*0.35],
+      [x1+gapx*(length + 0.5),y1-gapy*0.35],
+      [x1+gapx*1.7,y1-gapy*0.35],
+    ]
+    let start = [x1+gapx*1.7,y1-gapy*0.35];
+    let end = [x1+gapx*1.7, y2+gapy*0.35];
+    var increment = ((x1+gapx*(length + 0.5))-(x1+gapx*1.7))/20;
+    for(let i = 0; i<20; i++){
+      start[0] += increment;
+      end[0] += increment;
+      drawLine(start,end);
+    }
+    finalLines.push(frame, rear, rear2, rear2s[0], rear2s[1], rear2s[2], rear3);
+  };
   }
 };
 
