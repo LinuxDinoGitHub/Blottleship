@@ -3,12 +3,13 @@
 const empty = false; //Set to true for the boats, otherwise false for mapping the opponents ships
 //Note that the grid still exists when it's true and can be used to map at the same time
 
-const gridWidth = 10; //Adjust to change board size
+const gridWidth = 11; //Adjust to change board size
 const boatNum = 5; //Adjust to increase or decrease the number of boats
 
 let scale = gridWidth >= 9? (gridWidth>=15? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
 //Changeable parameters OVER
 
+//Keep these two parameters the same preferably for better gameplay and avoiding a bug I never bothered to fix
 const width = 125; //Only adjust if necessary, might screw things up idk man
 const height = 125; //Same here ^
 
@@ -198,9 +199,9 @@ function parseCoords(coords, vertex){ //Vertex is coords return value: tr, br, t
     case "tl":
       return [x,y];//default
     case "br": 
-      return [x, y-gapy];
-    case "bl":
       return [x+gapx, y-gapy];
+    case "bl":
+      return [x, y-gapy];
   };
 }
 
@@ -209,13 +210,26 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
   const turtle = new bt.Turtle();
   let x; //starting x position
   let y; //starting y
+  //**pivot will be bl when up
   let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
   [x, y] = parseCoords(coords, o);
   turtle.jump([x, y]);
-  const theta = Math.atan(8/5);
-  turtle.setAngle(orientation == "l"? 180 : (orientation == "r"? 0:(orientation == "u"? 90 : 270)))
-  turtle.right(theta); 
-  turtle.forward((gapx*Math.sqrt(89))/10);//
+  if (orientation == "l" || orientation == "r"){
+    const theta = Math.atan(8/5) * (180/Math.PI);
+    turtle.setAngle(orientation == "l"? 180 : 0)
+    turtle.right(90-theta); 
+    turtle.forward((gapx*Math.sqrt(89))/10);
+    turtle.right(2*theta)
+    turtle.forward((gapx*Math.sqrt(89))/10);
+  }
+  else{
+    const theta = Math.atan(8/5) * (180/Math.PI);
+    turtle.setAngle(orientation == "u"? 90 : 270);
+        turtle.right(90-theta); 
+    turtle.forward((gapx*Math.sqrt(89))/10);
+    turtle.right(2*theta);
+    turtle.forward((gapx*Math.sqrt(89))/10);
+  }
   drawLines(turtle.lines());
 };
 
@@ -225,7 +239,7 @@ let body = (coords, orientation) => { //The body of the ship
 
 let occupied = [];
 if(!empty){ //Checks if the player wants an empty sheet or not
-  tip("a:1","r");
+  tip("a:1","r"); 
   tip("f:5","l");
   tip("e:2","d");
   tip("b:10","u");
