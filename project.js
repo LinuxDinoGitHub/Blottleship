@@ -247,20 +247,31 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
   let leftxoffset;
   //small boat
   if(length <= 2){
-    let left = bt.catmullRom([[x1,y1], [x1-gapx*0.3, (y2+y1)/2], [x1,y2]],10);
-    console.log("Hello");
-    body.push(left);//left side
+    if(orientation == "v"){
+      let left = bt.catmullRom([[x1,y1], [x1-gapx*0.2, (y2+y1)/2], [x1,y2]],10);
+      finalLines.push(left);//left side
+      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.2, (y2+y1)/2], [x2,y2]],10);
+      finalLines.push(right);//right side
+    }
+    else{      
+      let left = bt.catmullRom([[x1,y1], [x1, y2-gapx*0.2], [x1,y2]],10);
+      finalLines.push(left);//left side
+      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.2, (y2+y1)/2], [x2,y2]],10);
+      finalLines.push(right);//right side
+    }
   }
-  finalLines.push(body);
+  else{
+    return;
+  }
 };
 
 let occupied = [];
 if(!empty){ //Checks if the player wants an empty sheet or not
-  tip("a:1","r"); 
-  tip("f:5","l");
-  tip("e:2","d");
-  tip("b:10","u");
-  body("c:10","d:10","v")
+  tip("c:5","r"); 
+  tip("c:2","l");
+  tip("b:3","u");
+  body("c:3","d:3","v")
+  tip("e:3","d")
 }
 
 //End of drawing ships
