@@ -238,27 +238,49 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
 
 let body = (coords1, coords2, orientation) => { //The body of the ship, takes in 2 positional params, orientation is either h(horizontal) or v (vertical)
   let x1, y1, x2, y2;
-  [x1, y1] = parseCoords(coords1, "tl");
+  [x1, y1] = parseCoords(coords1, "tl"); //coords1 > coords2 must be or else it wont rly work
   [x2, y2] = parseCoords(coords2, "br"); 
-  let length = orientation == "v"? Math.abs(y2-y1)/gapy: Math.abs(x2-x1)/gapx;
-  console.log(length)
+  let coords1des = coords1.split(':'); //Destructed coords1
+  let coords2des = coords2.split(':');
+  let length = orientation == "v"? alphabet.indexOf(coords2des[0])-alphabet.indexOf(coords1des[0]): coords2des[1]-coords1des[1];
   //2 styles - big ship and small boat
   let body = [];
   let leftxoffset;
   //small boat
   if(length <= 2){
     if(orientation == "v"){
-      let left = bt.catmullRom([[x1,y1], [x1-gapx*0.2, (y2+y1)/2], [x1,y2]],10);
+      let left = bt.catmullRom([[x1,y1], [x1-gapx*0.1, (y2+y1)/2], [x1,y2]],10);
       finalLines.push(left);//left side
-      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.2, (y2+y1)/2], [x2,y2]],10);
+      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.1, (y2+y1)/2], [x2,y2]],10);
       finalLines.push(right);//right side
     }
     else{      
-      let left = bt.catmullRom([[x1,y1], [x1, y2-gapx*0.2], [x1,y2]],10);
+      let left = bt.catmullRom([[x1,y1], [(x1+x2)/2, y1+gapy*0.1], [x2,y1]],10);
       finalLines.push(left);//left side
-      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.2, (y2+y1)/2], [x2,y2]],10);
+      let right = bt.catmullRom([[x1,y2], [(x1+x2)/2, y2-gapy*0.1], [x2,y2]],10);
       finalLines.push(right);//right side
     }
+    let seat = [
+      [x1+gapx*0.2, y1-gapy*0.2],
+      [x2-gapx*0.2, y1-gapy*0.2],
+      [x2-gapx*0.2, y2+gapy*0.2],
+      [x1+gapx*0.2, y2+gapy*0.2],
+      [x1+gapx*0.2, y1-gapy*0.2],
+    ];
+    let plank = orientation == "v"? [
+      [x1+gapx*0.2, y1-gapy*0.5],
+      [x1+gapx*0.2, y1-gapy*0.8],
+      [x1+gapx*0.8, y1-gapy*0.8],
+      [x1+gapx*0.8, y1-gapy*0.5],
+      [x1+gapx*0.2, y1-gapy*0.5],
+    ] : [
+      [x1+gapx*0.5, y1-gapy*0.2],
+      [x1+gapx*0.8, y1-gapy*0.2],
+      [x1+gapx*0.8, y1-gapy*0.8],
+      [x1+gapx*0.5, y1-gapy*0.8],
+      [x1+gapx*0.5, y1-gapy*0.2],
+    ];
+    finalLines.push(seat, plank);
   }
   else{
     return;
@@ -270,8 +292,9 @@ if(!empty){ //Checks if the player wants an empty sheet or not
   tip("c:5","r"); 
   tip("c:2","l");
   tip("b:3","u");
-  body("c:3","d:3","v")
-  tip("e:3","d")
+  body("c:3","c:4","h");
+  body("c:3","d:3","v");
+  tip("e:3","d");
 }
 
 //End of drawing ships
