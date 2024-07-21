@@ -238,16 +238,19 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
 
 let body = (coords1, coords2, orientation) => { //The body of the ship, takes in 2 positional params, orientation is either h(horizontal) or v (vertical)
   let x1, y1, x2, y2;
-  //top left of coords 1 will always be pivot
   [x1, y1] = parseCoords(coords1, "tl");
   [x2, y2] = parseCoords(coords2, "br"); 
-  let body = [
-    [x1,y1],
-    [x1+(gapx*(Math.abs(x2-x1))), y1],
-    [x1+(gapx*(Math.abs(x2-x1))), y2],
-    [x2, y2],
-    [x1, y1]
-  ]
+  let length = orientation == "v"? Math.abs(y2-y1)/gapy: Math.abs(x2-x1)/gapx;
+  console.log(length)
+  //2 styles - big ship and small boat
+  let body = [];
+  let leftxoffset;
+  //small boat
+  if(length <= 2){
+    let left = bt.catmullRom([[x1,y1], [x1-gapx*0.3, (y2+y1)/2], [x1,y2]],10);
+    console.log("Hello");
+    body.push(left);//left side
+  }
   finalLines.push(body);
 };
 
