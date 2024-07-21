@@ -212,24 +212,28 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
   let y; //starting y
   //**pivot will be bl when up
   let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
+  let highest = [0, 0] //idk maybe this is useful
   [x, y] = parseCoords(coords, o);
   turtle.jump([x, y]);
-  if (orientation == "l" || orientation == "r"){
-    const theta = Math.atan(8/5) * (180/Math.PI);
-    turtle.setAngle(orientation == "l"? 180 : 0)
+  if(orientation == "l" || orientation == "r"){
+    var theta = Math.atan(8*gapx/5*gapy) * (180/Math.PI);
+    turtle.setAngle(orientation == "l"? 180 : 0);
     turtle.right(90-theta); 
-    turtle.forward((gapx*Math.sqrt(89))/10);
-    turtle.right(2*theta)
-    turtle.forward((gapx*Math.sqrt(89))/10);
+    turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
+    highest = turtle.pos;
+    turtle.right(2*theta);
+    turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
   }
   else{
-    const theta = Math.atan(8/5) * (180/Math.PI);
+    var theta = Math.atan(8*gapy/5*gapx) * (180/Math.PI);
     turtle.setAngle(orientation == "u"? 90 : 270);
-        turtle.right(90-theta); 
-    turtle.forward((gapx*Math.sqrt(89))/10);
+    turtle.right(90-theta); 
+    turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
+    highest = turtle.pos;
     turtle.right(2*theta);
-    turtle.forward((gapx*Math.sqrt(89))/10);
-  }
+    turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
+  };
+  console.log(turtle);
   drawLines(turtle.lines());
 };
 
