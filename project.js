@@ -3,10 +3,10 @@
 const empty = false; //Set to true for the boats, otherwise false for mapping the opponents ships
 //Note that the grid still exists when it's true and can be used to map at the same time
 
-const gridWidth = 11; //Adjust to change board size
+const gridWidth = 10; //Adjust to change board size, recommended 10 as there are bugs present outside these boundaries
 const boatNum = 5; //Adjust to increase or decrease the number of boats, longest ship will be this value + 1
 
-let scale = gridWidth >= 9? (gridWidth>=15? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
+let scale = gridWidth >= 9 ? (gridWidth >= 15 ? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
 //Changeable parameters OVER
 
 //Keep these two parameters the same preferably for better gameplay and avoiding a bug I never bothered to fix
@@ -20,9 +20,9 @@ setDocDimensions(width, height);
 
 //tysm Scott C who made the following letter commands for his crossword game this saved me so much time, huge credits to them
 //Text engine (This part I wrote myself, I only copied the commands for the object)
-function drawLetter(letter, posx, posy){ //Text engine essentially
-  if(parseInt(letter)){
-    if(letter >= 10){
+function drawLetter(letter, posx, posy) { //Text engine essentially
+  if (parseInt(letter)) {
+    if (letter >= 10) {
       handleNumber(letter, posx, posy);
       return;
     }
@@ -31,14 +31,14 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
   const turtle = new bt.Turtle();
   let commands = letters[l].split(',');
   turtle.jump([posx, posy]);
-  for (const command of commands){
+  for (const command of commands) {
     let instruct = command.split('$');
-    switch(instruct[0]){
+    switch (instruct[0]) {
       case "sa":
         turtle.setAngle(parseFloat(instruct[1]));
         break;
       case "f":
-        turtle.forward(parseFloat(instruct[1])*scale);
+        turtle.forward(parseFloat(instruct[1]) * scale);
         break;
       case "r":
         turtle.right(parseFloat(instruct[1]));
@@ -47,7 +47,7 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
         turtle.left(parseFloat(instruct[1]));
         break;
       case "arc":
-        turtle.arc(parseFloat(instruct[1].split(":")[0]), parseFloat(instruct[1].split(":")[1])*scale);
+        turtle.arc(parseFloat(instruct[1].split(":")[0]), parseFloat(instruct[1].split(":")[1]) * scale);
         break;
       case "u":
         turtle.up();
@@ -59,12 +59,13 @@ function drawLetter(letter, posx, posy){ //Text engine essentially
   }
   drawLines(turtle.lines());
 }
-function handleNumber(letter, posx, posy){
+
+function handleNumber(letter, posx, posy) {
   let x = posx;
   let y = posy;
-  const increment = scale*3;
-  for(const digit of letter.toString()){
-    drawLetter(digit, x-scale*1.5, y);
+  const increment = scale * 3;
+  for (const digit of letter.toString()) {
+    drawLetter(digit, x - scale * 1.5, y);
     x += increment;
   }
   return false; //Just tells it to skip everything
@@ -112,10 +113,10 @@ const letters = { //tysm Scott C who made the following letter commands for his 
 let tempScale = scale;
 scale = 2;
 let text = "blottleship";
-let X = width/2 - 27;
+let X = width / 2 - 27;
 let Y = height - 10;
 let increment = 0;
-for(const letter of text){
+for (const letter of text) {
   drawLetter(letter, X + increment, Y);
   increment += 5
 }
@@ -125,37 +126,37 @@ scale = tempScale;
 const finalLines = [];
 
 const mainframe = [ //Main outer grid
-  [5, height-15],
-  [width-5, height-15],
-  [width-5, 5],
+  [5, height - 15],
+  [width - 5, height - 15],
+  [width - 5, 5],
   [5, 5],
-  [5, height-15]
+  [5, height - 15]
 ];
 
 //Inner grid
-function drawLine(pointA, pointB){ //Lazy function and also pointA and B are arrays like [number, number]
+function drawLine(pointA, pointB) { //Lazy function and also pointA and B are arrays like [number, number]
   const turtle = new bt.Turtle();
   turtle.jump(pointA);
   turtle.goTo(pointB);
   drawLines(turtle.lines());
 }
 
-const gapx = (width-10)/(gridWidth+1);
-const gapy = (height-20)/(gridWidth+1);
+const gapx = (width - 10) / (gridWidth + 1);
+const gapy = (height - 20) / (gridWidth + 1);
 
-let A = [5, height-15]
+let A = [5, height - 15]
 let B = [5, 5]
 //Draws columns
-for(let i=0; i < gridWidth + 1; i++){
+for (let i = 0; i < gridWidth + 1; i++) {
   drawLine(A, B);
   A[0] += gapx;
   B[0] += gapx;
 }
 
-A = [5, height-15];
-B = [width-5, height-15];
+A = [5, height - 15];
+B = [width - 5, height - 15];
 //Draws rows
-for(let i=0; i < gridWidth + 1; i++){
+for (let i = 0; i < gridWidth + 1; i++) {
   drawLine(A, B);
   A[1] -= gapy;
   B[1] -= gapy;
@@ -165,43 +166,43 @@ for(let i=0; i < gridWidth + 1; i++){
 
 //Letter drawing
 let alphabet = "abcdefghijklmnopqrstuvwxyz";
-alphabet = alphabet.slice(0,gridWidth);
+alphabet = alphabet.slice(0, gridWidth);
 
 //height-15 = start of grid i think
 X = 5 + gapx;
-Y = height-15 - gapy;
+Y = height - 15 - gapy;
 
-let xcp = gapx/2 - scale; //X center padding
-let ycp = gapy/2 + scale*2; //Y center padding
+let xcp = gapx / 2 - scale; //X center padding
+let ycp = gapy / 2 + scale * 2; //Y center padding
 
-for(const letter of alphabet){ //draws letters
-  drawLetter(letter, 5+xcp, Y-ycp); //Draws the row letters
-  Y-=gapy;
+for (const letter of alphabet) { //draws letters
+  drawLetter(letter, 5 + xcp, Y - ycp); //Draws the row letters
+  Y -= gapy;
 };
 
-for(let i = 1; i < gridWidth+1; i++){ //draws numbers
-  drawLetter(i, X+xcp, height-15-ycp); //Draws the column letters
-  X+=gapx;
+for (let i = 1; i < gridWidth + 1; i++) { //draws numbers
+  drawLetter(i, X + xcp, height - 15 - ycp); //Draws the column letters
+  X += gapx;
 };
 
 //Letters complete
 
 //Drawing ships
-function parseCoords(coords, vertex){ //Vertex is coords return value: tr, br, tl, bl (top-right, ... ,bottom-left, etc.)
+function parseCoords(coords, vertex) { //Vertex is coords return value: tr, br, tl, bl (top-right, ... ,bottom-left, etc.)
   let letter = coords.split(':')[0]; //Assumes it is fail proof
   let number = coords.split(':')[1];
   //defaults to top left first and then modifies
-  let x = gapx*number + 5;
-  let y = height - 15 - gapy*(alphabet.indexOf(letter)+1);
-  switch(vertex){
+  let x = gapx * number + 5;
+  let y = height - 15 - gapy * (alphabet.indexOf(letter) + 1);
+  switch (vertex) {
     case "tr":
-      return [x+gapx, y];
+      return [x + gapx, y];
     case "tl":
-      return [x,y];//default
-    case "br": 
-      return [x+gapx, y-gapy];
+      return [x, y]; //default
+    case "br":
+      return [x + gapx, y - gapy];
     case "bl":
-      return [x, y-gapy];
+      return [x, y - gapy];
   };
 }
 
@@ -211,27 +212,26 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
   let x; //starting x position
   let y; //starting y
   //**pivot will be bl when up
-  let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
+  let o = orientation == "l" ? "br" : (orientation == "r" ? "tl" : (orientation == "u" ? "bl" : "tr"));
   let highest = [0, 0]; //idk maybe this is useful
   [x, y] = parseCoords(coords, o);
   turtle.jump([x, y]);
-  if(orientation == "l" || orientation == "r"){
-    let theta = Math.atan((8*gapx)/(5*gapy)) * (180/Math.PI);
-    turtle.setAngle(orientation == "l"? 180 : 0);
-    turtle.right(90-theta); 
-    turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
+  if (orientation == "l" || orientation == "r") {
+    let theta = Math.atan((8 * gapx) / (5 * gapy)) * (180 / Math.PI);
+    turtle.setAngle(orientation == "l" ? 180 : 0);
+    turtle.right(90 - theta);
+    turtle.forward((Math.sqrt(64 * (gapx ** 2) + 25 * (gapy ** 2))) / 10);
     highest = turtle.pos;
-    turtle.right(2*theta);
-    turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
-  }
-  else{
-    let theta = Math.atan((8*gapy)/(5*gapx)) * (180/Math.PI);
-    turtle.setAngle(orientation == "u"? 90 : 270);
-    turtle.right(90-theta); 
-    turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
+    turtle.right(2 * theta);
+    turtle.forward((Math.sqrt(64 * (gapx ** 2) + 25 * (gapy ** 2))) / 10);
+  } else {
+    let theta = Math.atan((8 * gapy) / (5 * gapx)) * (180 / Math.PI);
+    turtle.setAngle(orientation == "u" ? 90 : 270);
+    turtle.right(90 - theta);
+    turtle.forward((Math.sqrt(64 * (gapy ** 2) + 25 * (gapx ** 2))) / 10);
     highest = turtle.pos;
-    turtle.right(2*theta);
-    turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
+    turtle.right(2 * theta);
+    turtle.forward((Math.sqrt(64 * (gapy ** 2) + 25 * (gapx ** 2))) / 10);
   }
   drawLines(turtle.lines());
 };
@@ -239,62 +239,107 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
 let body = (coords1, coords2, orientation) => { //The body of the ship, takes in 2 positional params, orientation is either h(horizontal) or v (vertical)
   let x1, y1, x2, y2;
   [x1, y1] = parseCoords(coords1, "tl"); //coords1 > coords2 must be or else it wont rly work
-  [x2, y2] = parseCoords(coords2, "br"); 
+  [x2, y2] = parseCoords(coords2, "br");
   let coords1des = coords1.split(':'); //Destructed coords1
   let coords2des = coords2.split(':');
-  let length = orientation == "v"? alphabet.indexOf(coords2des[0])-alphabet.indexOf(coords1des[0]): coords2des[1]-coords1des[1];
+  let length = orientation == "v" ? alphabet.indexOf(coords2des[0]) - alphabet.indexOf(coords1des[0]) : coords2des[1] - coords1des[1];
   //2 styles - big ship and small boat
   let body = [];
   let leftxoffset;
   //small boat
-  if(length <= 2){
-    if(orientation == "v"){
-      let left = bt.catmullRom([[x1,y1], [x1-gapx*0.1, (y2+y1)/2], [x1,y2]],10);
-      finalLines.push(left);//left side
-      let right = bt.catmullRom([[x2,y1], [x2+gapx*0.1, (y2+y1)/2], [x2,y2]],10);
-      finalLines.push(right);//right side
-    }
-    else{      
-      let left = bt.catmullRom([[x1,y1], [(x1+x2)/2, y1+gapy*0.1], [x2,y1]],10);
-      finalLines.push(left);//left side
-      let right = bt.catmullRom([[x1,y2], [(x1+x2)/2, y2-gapy*0.1], [x2,y2]],10);
-      finalLines.push(right);//right side
+  if (length < 2) {
+    if (orientation == "v") {
+      let left = bt.catmullRom([
+        [x1, y1],
+        [x1 - gapx * 0.1, (y2 + y1) / 2],
+        [x1, y2]
+      ], 10);
+      finalLines.push(left); //left side
+      let right = bt.catmullRom([
+        [x2, y1],
+        [x2 + gapx * 0.1, (y2 + y1) / 2],
+        [x2, y2]
+      ], 10);
+      finalLines.push(right); //right side
+    } else {
+      let left = bt.catmullRom([
+        [x1, y1],
+        [(x1 + x2) / 2, y1 + gapy * 0.1],
+        [x2, y1]
+      ], 10);
+      finalLines.push(left); //left side
+      let right = bt.catmullRom([
+        [x1, y2],
+        [(x1 + x2) / 2, y2 - gapy * 0.1],
+        [x2, y2]
+      ], 10);
+      finalLines.push(right); //right side
     }
     let seat = [
-      [x1+gapx*0.2, y1-gapy*0.2],
-      [x2-gapx*0.2, y1-gapy*0.2],
-      [x2-gapx*0.2, y2+gapy*0.2],
-      [x1+gapx*0.2, y2+gapy*0.2],
-      [x1+gapx*0.2, y1-gapy*0.2],
+      [x1 + gapx * 0.2, y1 - gapy * 0.2],
+      [x2 - gapx * 0.2, y1 - gapy * 0.2],
+      [x2 - gapx * 0.2, y2 + gapy * 0.2],
+      [x1 + gapx * 0.2, y2 + gapy * 0.2],
+      [x1 + gapx * 0.2, y1 - gapy * 0.2],
     ];
-    let plank = orientation == "v"? [
-      [x1+gapx*0.2, y1-gapy*0.5],
-      [x1+gapx*0.2, y1-gapy*0.8],
-      [x1+gapx*0.8, y1-gapy*0.8],
-      [x1+gapx*0.8, y1-gapy*0.5],
-      [x1+gapx*0.2, y1-gapy*0.5],
+    let plank = orientation == "v" ? [
+      [x1 + gapx * 0.2, y1 - gapy * 0.5],
+      [x1 + gapx * 0.2, y1 - gapy * 0.8],
+      [x1 + gapx * 0.8, y1 - gapy * 0.8],
+      [x1 + gapx * 0.8, y1 - gapy * 0.5],
+      [x1 + gapx * 0.2, y1 - gapy * 0.5],
     ] : [
-      [x1+gapx*0.5, y1-gapy*0.2],
-      [x1+gapx*0.8, y1-gapy*0.2],
-      [x1+gapx*0.8, y1-gapy*0.8],
-      [x1+gapx*0.5, y1-gapy*0.8],
-      [x1+gapx*0.5, y1-gapy*0.2],
+      [x1 + gapx * 0.5, y1 - gapy * 0.2],
+      [x1 + gapx * 0.8, y1 - gapy * 0.2],
+      [x1 + gapx * 0.8, y1 - gapy * 0.8],
+      [x1 + gapx * 0.5, y1 - gapy * 0.8],
+      [x1 + gapx * 0.5, y1 - gapy * 0.2],
     ];
     finalLines.push(seat, plank);
-  }
-  else{
-    return;
+  } else {
+    if (orientation == "v") {
+      let frame = [
+        [x1, y1],
+        [x2, y1],
+        [x2+gapx*0.3, y1-gapy*0.1],
+        [x2+gapx*0.3, y2+gapy*1.1],
+        [x2, y2+gapy*0.3],
+        [x1, y2+gapy*0.3],
+        [x1-gapx*0.3, y2+gapy*1.1],
+        [x1-gapx*0.3, y1-gapy*0.1],
+        [x1, y1],
+      ];
+      finalLines.push(frame);
+    }
+    else{
+     let frame = [
+        [x1, y1],
+        [x1, y2],
+        [x1+gapx*0.3, y2+gapy*0.3],
+        [x1+gapx*0.1, y1+gapy*0.3],
+        [x1, y1+gapy*0.3],
+        [x2, y1+gapy*0.3],
+        [x2-gapx*0.3, y1+gapy*1.1],
+        [x2-gapx*0.3, y2-gapy*0.1],
+        [x1, y1],
+      ];
+      finalLines.push(frame);
+    };
+
   }
 };
 
 let occupied = [];
-if(!empty){ //Checks if the player wants an empty sheet or not
-  tip("c:5","r"); 
-  tip("c:2","l");
-  tip("b:3","u");
-  body("c:3","c:4","h");
-  body("c:3","d:3","v");
-  tip("e:3","d");
+if (!empty) { //Checks if the player wants an empty sheet or not
+  tip("c:5", "r");
+  tip("c:2", "l");
+  body("c:3", "c:4", "h");
+  tip("e:2","u");
+  body("f:2","f:2","v");
+  tip("e:7","u");
+  body("f:7","j:7","v")
+  tip("a:1","l");
+  body("a:2","a:4","h")
 }
 
 //End of drawing ships
