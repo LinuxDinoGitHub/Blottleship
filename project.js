@@ -4,7 +4,7 @@ const empty = false; //Set to true for the boats, otherwise false for mapping th
 //Note that the grid still exists when it's true and can be used to map at the same time
 
 const gridWidth = 11; //Adjust to change board size
-const boatNum = 5; //Adjust to increase or decrease the number of boats
+const boatNum = 5; //Adjust to increase or decrease the number of boats, longest ship will be this value + 1
 
 let scale = gridWidth >= 9? (gridWidth>=15? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
 //Changeable parameters OVER
@@ -212,11 +212,11 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
   let y; //starting y
   //**pivot will be bl when up
   let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
-  let highest = [0, 0] //idk maybe this is useful
+  let highest = [0, 0]; //idk maybe this is useful
   [x, y] = parseCoords(coords, o);
   turtle.jump([x, y]);
   if(orientation == "l" || orientation == "r"){
-    var theta = Math.atan(8*gapx/5*gapy) * (180/Math.PI);
+    let theta = Math.atan((8*gapx)/(5*gapy)) * (180/Math.PI);
     turtle.setAngle(orientation == "l"? 180 : 0);
     turtle.right(90-theta); 
     turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
@@ -225,20 +225,30 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
     turtle.forward((Math.sqrt(64*(gapx**2)+25*(gapy**2)))/10);
   }
   else{
-    var theta = Math.atan(8*gapy/5*gapx) * (180/Math.PI);
+    let theta = Math.atan((8*gapy)/(5*gapx)) * (180/Math.PI);
     turtle.setAngle(orientation == "u"? 90 : 270);
     turtle.right(90-theta); 
     turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
     highest = turtle.pos;
     turtle.right(2*theta);
     turtle.forward((Math.sqrt(64*(gapy**2)+25*(gapx**2)))/10);
-  };
-  console.log(turtle);
+  }
   drawLines(turtle.lines());
 };
 
-let body = (coords, orientation) => { //The body of the ship
-  
+let body = (coords1, coords2, orientation) => { //The body of the ship, takes in 2 positional params, orientation is either h(horizontal) or v (vertical)
+  let x1, y1, x2, y2;
+  //top left of coords 1 will always be pivot
+  [x1, y1] = parseCoords(coords1, "tl");
+  [x2, y2] = parseCoords(coords2, "br"); 
+  let body = [
+    [x1,y1],
+    [x1+(gapx*(Math.abs(x2-x1))), y1],
+    [x1+(gapx*(Math.abs(x2-x1))), y2],
+    [x2, y2],
+    [x1, y1]
+  ]
+  finalLines.push(body);
 };
 
 let occupied = [];
@@ -247,6 +257,7 @@ if(!empty){ //Checks if the player wants an empty sheet or not
   tip("f:5","l");
   tip("e:2","d");
   tip("b:10","u");
+  body("c:10","d:10","v")
 }
 
 //End of drawing ships
