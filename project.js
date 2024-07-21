@@ -212,9 +212,10 @@ let tip = (coords, orientation) => { //The tip of the ship, coords: letter: a1, 
   let o = orientation == "l"? "br" : (orientation == "r"? "tl":(orientation == "u"? "bl" : "tr"));
   [x, y] = parseCoords(coords, o);
   turtle.jump([x, y]);
+  const theta = Math.atan(8/5);
   turtle.setAngle(orientation == "l"? 180 : (orientation == "r"? 0:(orientation == "u"? 90 : 270)))
-  turtle.right(45); 
-  turtle.forward(10);//
+  turtle.right(theta); 
+  turtle.forward((gapx*Math.sqrt(89))/10);//
   drawLines(turtle.lines());
 };
 
