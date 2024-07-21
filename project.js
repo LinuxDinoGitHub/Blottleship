@@ -315,12 +315,12 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
      let frame = [
         [x1, y1],
         [x1, y2],
-        [x1+gapx*0.3, y2+gapy*0.3],
+        [x1+gapx*0.1, y2-gapy*0.3],
+        [x2-gapx*1.1, y2-gapy*0.3],
+        [x2-gapx*0.3, y2],
+        [x2-gapx*0.3, y1],
+        [x2-gapx*1.1, y1+gapy*0.3],
         [x1+gapx*0.1, y1+gapy*0.3],
-        [x1, y1+gapy*0.3],
-        [x2, y1+gapy*0.3],
-        [x2-gapx*0.3, y1+gapy*1.1],
-        [x2-gapx*0.3, y2-gapy*0.1],
         [x1, y1],
       ];
       finalLines.push(frame);
