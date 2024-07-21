@@ -309,7 +309,32 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
         [x1-gapx*0.3, y1-gapy*0.1],
         [x1, y1],
       ];
-      finalLines.push(frame);
+      let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
+        [x1+gapx*0.1, y1-gapy*0.2],
+        [x2-gapx*0.1, y1-gapy*0.2],
+        [x2-gapx*0.1, y1-gapy*0.4],
+        [x1+gapx*0.1, y1-gapy*0.4],
+        [x1+gapx*0.1, y1-gapy*0.2],
+      ];
+      let rear2 = [
+        [x1+gapx*0.35, y1-gapy*0.6],
+        [x1+gapx*0.2, y1-gapy*0.7],
+        [x1+gapx*0.2, y1-gapy*1.3],
+        [x1+gapx*0.1, y1-gapy*1.6],
+        [x1+gapx*0.3, y1-gapy*1.6],
+        [x1+gapx*0.35, y1-gapy*1.45],
+        [x2-gapx*0.35, y1-gapy*1.45],
+        [x2-gapx*0.3, y1-gapy*1.6],
+        [x2-gapx*0.1, y1-gapy*1.6],
+        [x2-gapx*0.2, y1-gapy*1.3],
+        [x2-gapx*0.2, y1-gapy*0.7],
+        [x2-gapx*0.35, y1-gapy*0.6],
+        [x1+gapx*0.35, y1-gapy*0.6],
+      ]
+      let rear2s = [
+        [x1+gapx*0.35, y1-gapy*0.6],
+      ]
+      finalLines.push(frame, rear, rear2, rear2s);
     }
     else{
      let frame = [
