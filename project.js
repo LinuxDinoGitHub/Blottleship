@@ -457,12 +457,37 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
 
 //Generating boats
 let oMap = []; //occupied maps
+for(let i = 0; i < gridWidth; i++){
+  let row = []
+  for(let k = 0; k < gridWidth; k++){
+    row.push(0);
+  }
+  oMap.push(row);
+}
+console.log(oMap)
 let occupied = {};
 if (!empty) { //Checks if the player wants an empty sheet or not
   for(const boatLength of boatSizes){
-    let found = false;
-    let coords = randIntInRange()
+    let coords, orientation;
+    do {
+      coords = [bt.randIntInRange(1,gridWidth),bt.randIntInRange(1,gridWidth)];
+      orientation = Math.random() < 0.5 ? (Math.random() < 0.5 ? "left": "right") : (Math.random() < 0.5 ? "up": "down");
+    } while(!isValidPlacement(coords, orientation, boatLength)[0])
   };
+  
+}
+function isValidPlacement(coords, orientation, boatLength){
+  let status = true; //one wrong thing will make it relocate ik thats sad
+  if (orientation == "left"){
+    for(let i = 0; i<boatLength; i++){ //Checks rows
+      try{
+        if(oMap[coords[0]-i][coords[1]-i] != 0){
+          status = false;
+        }
+      }
+    }
+  }
+  return [status, ];
 }
 
 //End of drawing ships
