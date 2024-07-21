@@ -5,7 +5,7 @@ const empty = false; //Set to true for the boats, otherwise false for mapping th
 
 const gridWidth = 10; //Adjust to change board size, recommended 10 as there are bugs present outside these boundaries
 const boatNum = 5; //Adjust to increase or decrease the number of boats, longest ship will be this value + 1
-
+const boatSizes = [2,3,4,4,5]; //Enter the number of boats, MUST DO IF ALTERED THE ABOVE VARIABLE
 let scale = gridWidth >= 9 ? (gridWidth >= 15 ? 0.5 : 1) : 2; //Adjust to change text size at a certain breaking point
 //Changeable parameters OVER
 
@@ -295,170 +295,174 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
       [x1 + gapx * 0.5, y1 - gapy * 0.8],
       [x1 + gapx * 0.5, y1 - gapy * 0.2],
     ];
+    if(length == 0){
+      let firstterm = orientation == "v"? [x1,y2] : [x2,y1];
+      let middleterm = orientation == "v"? [(x1+x2)/2, y2-gapy*0.2] : [x1+gapx*1.2, (y1+y2)/2];
+      let boatend = bt.catmullRom([firstterm,middleterm,[x2,y2]], 10);
+      finalLines.push(boatend);
+    };
     finalLines.push(seat, plank);
+    //Big ship
   } else {
     if (orientation == "v") {
       let frame = [
         [x1, y1],
         [x2, y1],
-        [x2+gapx*0.3, y1-gapy*0.1],
-        [x2+gapx*0.3, y2+gapy*1.1],
-        [x2, y2+gapy*0.3],
-        [x1, y2+gapy*0.3],
-        [x1-gapx*0.3, y2+gapy*1.1],
-        [x1-gapx*0.3, y1-gapy*0.1],
+        [x2 + gapx * 0.3, y1 - gapy * 0.1],
+        [x2 + gapx * 0.3, y2 + gapy * 1.1],
+        [x2, y2 + gapy * 0.3],
+        [x1, y2 + gapy * 0.3],
+        [x1 - gapx * 0.3, y2 + gapy * 1.1],
+        [x1 - gapx * 0.3, y1 - gapy * 0.1],
         [x1, y1],
       ];
       let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
-        [x1+gapx*0.1, y1-gapy*0.2],
-        [x2-gapx*0.1, y1-gapy*0.2],
-        [x2-gapx*0.1, y1-gapy*0.4],
-        [x1+gapx*0.1, y1-gapy*0.4],
-        [x1+gapx*0.1, y1-gapy*0.2],
+        [x1 + gapx * 0.1, y1 - gapy * 0.2],
+        [x2 - gapx * 0.1, y1 - gapy * 0.2],
+        [x2 - gapx * 0.1, y1 - gapy * 0.4],
+        [x1 + gapx * 0.1, y1 - gapy * 0.4],
+        [x1 + gapx * 0.1, y1 - gapy * 0.2],
       ];
       let rear2 = [
-        [x1+gapx*0.35, y1-gapy*0.6],
-        [x1+gapx*0.2, y1-gapy*0.7],
-        [x1+gapx*0.2, y1-gapy*1.3],
-        [x1+gapx*0.1, y1-gapy*1.6],
-        [x1+gapx*0.3, y1-gapy*1.6],
-        [x1+gapx*0.35, y1-gapy*1.45],
-        [x2-gapx*0.35, y1-gapy*1.45],
-        [x2-gapx*0.3, y1-gapy*1.6],
-        [x2-gapx*0.1, y1-gapy*1.6],
-        [x2-gapx*0.2, y1-gapy*1.3],
-        [x2-gapx*0.2, y1-gapy*0.7],
-        [x2-gapx*0.35, y1-gapy*0.6],
-        [x1+gapx*0.35, y1-gapy*0.6],
+        [x1 + gapx * 0.35, y1 - gapy * 0.6],
+        [x1 + gapx * 0.2, y1 - gapy * 0.7],
+        [x1 + gapx * 0.2, y1 - gapy * 1.3],
+        [x1 + gapx * 0.1, y1 - gapy * 1.6],
+        [x1 + gapx * 0.3, y1 - gapy * 1.6],
+        [x1 + gapx * 0.35, y1 - gapy * 1.45],
+        [x2 - gapx * 0.35, y1 - gapy * 1.45],
+        [x2 - gapx * 0.3, y1 - gapy * 1.6],
+        [x2 - gapx * 0.1, y1 - gapy * 1.6],
+        [x2 - gapx * 0.2, y1 - gapy * 1.3],
+        [x2 - gapx * 0.2, y1 - gapy * 0.7],
+        [x2 - gapx * 0.35, y1 - gapy * 0.6],
+        [x1 + gapx * 0.35, y1 - gapy * 0.6],
       ]
       let rear2s = [
         [
-          [x1+gapx*0.35, y1-gapy*0.8],
-          [x2-gapx*0.35, y1-gapy*0.8],
-          [x2-gapx*0.35, y1-gapy],
-          [x1+gapx*0.35, y1-gapy],
-          [x1+gapx*0.35, y1-gapy*0.8],
+          [x1 + gapx * 0.35, y1 - gapy * 0.8],
+          [x2 - gapx * 0.35, y1 - gapy * 0.8],
+          [x2 - gapx * 0.35, y1 - gapy],
+          [x1 + gapx * 0.35, y1 - gapy],
+          [x1 + gapx * 0.35, y1 - gapy * 0.8],
         ],
         [
-          [x1+gapx*0.35, y1-gapy*1.1],
-          [x2-gapx*0.35, y1-gapy*1.1],
-          [x2-gapx*0.35, y1-gapy*1.2],
-          [x1+gapx*0.35, y1-gapy*1.2],
-          [x1+gapx*0.35, y1-gapy*1.1],
+          [x1 + gapx * 0.35, y1 - gapy * 1.1],
+          [x2 - gapx * 0.35, y1 - gapy * 1.1],
+          [x2 - gapx * 0.35, y1 - gapy * 1.2],
+          [x1 + gapx * 0.35, y1 - gapy * 1.2],
+          [x1 + gapx * 0.35, y1 - gapy * 1.1],
         ],
         [
-          [x1+gapx*0.35, y1-gapy*1.25],
-          [x2-gapx*0.35, y1-gapy*1.25],
-          [x2-gapx*0.35, y1-gapy*1.35],
-          [x1+gapx*0.35, y1-gapy*1.35],
-          [x1+gapx*0.35, y1-gapy*1.25],
+          [x1 + gapx * 0.35, y1 - gapy * 1.25],
+          [x2 - gapx * 0.35, y1 - gapy * 1.25],
+          [x2 - gapx * 0.35, y1 - gapy * 1.35],
+          [x1 + gapx * 0.35, y1 - gapy * 1.35],
+          [x1 + gapx * 0.35, y1 - gapy * 1.25],
         ],
       ]
       let rear3 = [
-        [x1+gapx*0.35, y1-gapy*1.7],
-        [x2-gapx*0.35, y1-gapy*1.7],
-        [x2-gapx*0.35,y1-gapy*(length+0.5)],
-        [x1+gapx*0.35, y1-gapy*(length+0.5)],
-        [x1+gapx*0.35, y1-gapy*1.7],
+        [x1 + gapx * 0.35, y1 - gapy * 1.7],
+        [x2 - gapx * 0.35, y1 - gapy * 1.7],
+        [x2 - gapx * 0.35, y1 - gapy * (length + 0.5)],
+        [x1 + gapx * 0.35, y1 - gapy * (length + 0.5)],
+        [x1 + gapx * 0.35, y1 - gapy * 1.7],
       ] //Bounds: x1+gapx*0.35 and y1-gapy*(length+0.5)
-      let start = [x1+gapx*0.35, y1-gapy*1.7];
-      let end = [x2-gapx*0.35, y1-gapy*1.7];
-      const increment = ((y1-gapy*(length+0.5))-(y1-gapy*1.7))/20;
-      for(let i = 0; i<20; i++){
+      let start = [x1 + gapx * 0.35, y1 - gapy * 1.7];
+      let end = [x2 - gapx * 0.35, y1 - gapy * 1.7];
+      const increment = ((y1 - gapy * (length + 0.5)) - (y1 - gapy * 1.7)) / 20;
+      for (let i = 0; i < 20; i++) {
         start[1] += increment;
         end[1] += increment;
-        drawLine(start,end);
+        drawLine(start, end);
       }
       finalLines.push(frame, rear, rear2, rear2s[0], rear2s[1], rear2s[2], rear3);
-    }
-    else{ //for horizontal
-     let frame = [
+    } else { //for horizontal
+      let frame = [
         [x1, y1],
         [x1, y2],
-        [x1+gapx*0.1, y2-gapy*0.3],
-        [x2-gapx*1.1, y2-gapy*0.3],
-        [x2-gapx*0.3, y2],
-        [x2-gapx*0.3, y1],
-        [x2-gapx*1.1, y1+gapy*0.3],
-        [x1+gapx*0.1, y1+gapy*0.3],
+        [x1 + gapx * 0.1, y2 - gapy * 0.3],
+        [x2 - gapx * 1.1, y2 - gapy * 0.3],
+        [x2 - gapx * 0.3, y2],
+        [x2 - gapx * 0.3, y1],
+        [x2 - gapx * 1.1, y1 + gapy * 0.3],
+        [x1 + gapx * 0.1, y1 + gapy * 0.3],
         [x1, y1],
       ];
-    let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
-      [x1+gapx*0.2,y1-gapy*0.1],
-      [x1+gapx*0.2,y2+gapy*0.1],
-      [x1+gapx*0.4,y2+gapy*0.1],
-      [x1+gapx*0.4,y1-gapy*0.1],
-      [x1+gapx*0.2,y1-gapy*0.1]
-    ];
-    let rear2 = [
-      [x1+gapx*0.6,y1-gapy*0.35],
-      [x1+gapx*0.7,y1-gapy*0.2], 
-      [x1+gapx*1.3,y1-gapy*0.2], 
-      [x1+gapx*1.6,y1-gapy*0.1], 
-      [x1+gapx*1.6,y1-gapy*0.3], 
-      [x1+gapx*1.45,y1-gapy*0.35],
-      [x1+gapx*1.45,y2+gapy*0.35],
-      [x1+gapx*1.6,y2+gapy*0.3], 
-      [x1+gapx*1.6,y2+gapy*0.1], 
-      [x1+gapx*1.3,y2+gapy*0.2], 
-      [x1+gapx*0.7,y2+gapy*0.2], 
-      [x1+gapx*0.6,y2+gapy*0.35],
-      [x1+gapx*0.6,y1-gapy*0.35],
-    ]
-    let rear2s = [
-      [
-        [x1+gapx*0.8,y1-gapy*0.35],
-        [x1+gapx*0.8,y2+gapy*0.35],
-        [x1+gapx,y2+gapy*0.35],
-        [x1+gapx,y1-gapy*0.35],
-        [x1+gapx*0.8,y1-gapy*0.35],
-      ],
-      [
-        [x1+gapx*1.1,y1-gapy*0.35], 
-        [x1+gapx*1.1,y2+gapy*0.35], 
-        [x1+gapx*1.2,y2+gapy*0.35], 
-        [x1+gapx*1.2,y1-gapy*0.35], 
-        [x1+gapx*1.1,y1-gapy*0.35], 
-      ],
-      [
-        [x1+gapx*1.25,y1-gapy*0.35], 
-        [x1+gapx*1.25,y2+gapy*0.35], 
-        [x1+gapx*1.35,y2+gapy*0.35], 
-        [x1+gapx*1.35,y1-gapy*0.35], 
-        [x1+gapx*1.25,y1-gapy*0.35], 
-      ],
-    ]
-    let rear3 = [
-      [x1+gapx*1.7,y1-gapy*0.35],
-      [x1+gapx*1.7,y2+gapy*0.35],
-      [x1+gapx*(length + 0.5),y2+gapy*0.35],
-      [x1+gapx*(length + 0.5),y1-gapy*0.35],
-      [x1+gapx*1.7,y1-gapy*0.35],
-    ]
-    let start = [x1+gapx*1.7,y1-gapy*0.35];
-    let end = [x1+gapx*1.7, y2+gapy*0.35];
-    var increment = ((x1+gapx*(length + 0.5))-(x1+gapx*1.7))/20;
-    for(let i = 0; i<20; i++){
-      start[0] += increment;
-      end[0] += increment;
-      drawLine(start,end);
-    }
-    finalLines.push(frame, rear, rear2, rear2s[0], rear2s[1], rear2s[2], rear3);
-  };
+      let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
+        [x1 + gapx * 0.2, y1 - gapy * 0.1],
+        [x1 + gapx * 0.2, y2 + gapy * 0.1],
+        [x1 + gapx * 0.4, y2 + gapy * 0.1],
+        [x1 + gapx * 0.4, y1 - gapy * 0.1],
+        [x1 + gapx * 0.2, y1 - gapy * 0.1]
+      ];
+      let rear2 = [
+        [x1 + gapx * 0.6, y1 - gapy * 0.35],
+        [x1 + gapx * 0.7, y1 - gapy * 0.2],
+        [x1 + gapx * 1.3, y1 - gapy * 0.2],
+        [x1 + gapx * 1.6, y1 - gapy * 0.1],
+        [x1 + gapx * 1.6, y1 - gapy * 0.3],
+        [x1 + gapx * 1.45, y1 - gapy * 0.35],
+        [x1 + gapx * 1.45, y2 + gapy * 0.35],
+        [x1 + gapx * 1.6, y2 + gapy * 0.3],
+        [x1 + gapx * 1.6, y2 + gapy * 0.1],
+        [x1 + gapx * 1.3, y2 + gapy * 0.2],
+        [x1 + gapx * 0.7, y2 + gapy * 0.2],
+        [x1 + gapx * 0.6, y2 + gapy * 0.35],
+        [x1 + gapx * 0.6, y1 - gapy * 0.35],
+      ]
+      let rear2s = [
+        [
+          [x1 + gapx * 0.8, y1 - gapy * 0.35],
+          [x1 + gapx * 0.8, y2 + gapy * 0.35],
+          [x1 + gapx, y2 + gapy * 0.35],
+          [x1 + gapx, y1 - gapy * 0.35],
+          [x1 + gapx * 0.8, y1 - gapy * 0.35],
+        ],
+        [
+          [x1 + gapx * 1.1, y1 - gapy * 0.35],
+          [x1 + gapx * 1.1, y2 + gapy * 0.35],
+          [x1 + gapx * 1.2, y2 + gapy * 0.35],
+          [x1 + gapx * 1.2, y1 - gapy * 0.35],
+          [x1 + gapx * 1.1, y1 - gapy * 0.35],
+        ],
+        [
+          [x1 + gapx * 1.25, y1 - gapy * 0.35],
+          [x1 + gapx * 1.25, y2 + gapy * 0.35],
+          [x1 + gapx * 1.35, y2 + gapy * 0.35],
+          [x1 + gapx * 1.35, y1 - gapy * 0.35],
+          [x1 + gapx * 1.25, y1 - gapy * 0.35],
+        ],
+      ]
+      let rear3 = [
+        [x1 + gapx * 1.7, y1 - gapy * 0.35],
+        [x1 + gapx * 1.7, y2 + gapy * 0.35],
+        [x1 + gapx * (length + 0.5), y2 + gapy * 0.35],
+        [x1 + gapx * (length + 0.5), y1 - gapy * 0.35],
+        [x1 + gapx * 1.7, y1 - gapy * 0.35],
+      ]
+      let start = [x1 + gapx * 1.7, y1 - gapy * 0.35];
+      let end = [x1 + gapx * 1.7, y2 + gapy * 0.35];
+      var increment = ((x1 + gapx * (length + 0.5)) - (x1 + gapx * 1.7)) / 20;
+      for (let i = 0; i < 20; i++) {
+        start[0] += increment;
+        end[0] += increment;
+        drawLine(start, end);
+      }
+      finalLines.push(frame, rear, rear2, rear2s[0], rear2s[1], rear2s[2], rear3);
+    };
   }
 };
+//End of boat design
 
-let occupied = [];
+//Generating boats
+let oMap = []; //occupied maps
+let occupied = {};
 if (!empty) { //Checks if the player wants an empty sheet or not
-  tip("c:5", "r");
-  tip("c:2", "l");
-  body("c:3", "c:4", "h");
-  tip("e:2","u");
-  body("f:2","f:2","v");
-  tip("e:7","u");
-  body("f:7","j:7","v")
-  tip("a:1","l");
-  body("a:2","a:4","h")
+  for(const boatLength of boatSizes){
+    let found = false;
+    let coords = randIntInRange()
+  };
 }
 
 //End of drawing ships
