@@ -308,12 +308,12 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
       let frame = [
         [x1, y1],
         [x2, y1],
-        [x2 + gapx * 0.3, y1 - gapy * 0.1],
-        [x2 + gapx * 0.3, y2 + gapy * 1.1],
+        [x2 + gapx * 0.2, y1 - gapy * 0.1],
+        [x2 + gapx * 0.2, y2 + gapy * 1.1],
         [x2, y2 + gapy * 0.3],
         [x1, y2 + gapy * 0.3],
-        [x1 - gapx * 0.3, y2 + gapy * 1.1],
-        [x1 - gapx * 0.3, y1 - gapy * 0.1],
+        [x1 - gapx * 0.2, y2 + gapy * 1.1],
+        [x1 - gapx * 0.2, y1 - gapy * 0.1],
         [x1, y1],
       ];
       let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
@@ -381,12 +381,12 @@ let body = (coords1, coords2, orientation) => { //The body of the ship, takes in
       let frame = [
         [x1, y1],
         [x1, y2],
-        [x1 + gapx * 0.1, y2 - gapy * 0.3],
-        [x2 - gapx * 1.1, y2 - gapy * 0.3],
+        [x1 + gapx * 0.1, y2 - gapy * 0.2],
+        [x2 - gapx * 1.1, y2 - gapy * 0.2],
         [x2 - gapx * 0.3, y2],
         [x2 - gapx * 0.3, y1],
-        [x2 - gapx * 1.1, y1 + gapy * 0.3],
-        [x1 + gapx * 0.1, y1 + gapy * 0.3],
+        [x2 - gapx * 1.1, y1 + gapy * 0.2],
+        [x1 + gapx * 0.1, y1 + gapy * 0.2],
         [x1, y1],
       ];
       let rear = [ //front thingy (I have no idea what a rear is but my gut tells me to name this thing a rear)
@@ -612,15 +612,21 @@ function addBoat(coords, orientation, length) { // Renders and updates virtual m
     }
   } else {
     switch (orientation) {
-      case "left":
-        break;
-      case "right":
-        break;
-      case "up":
-        break;
-      case "down":
-        break;
-    }
+        case "left":
+          body = toCoords([coords[0], coords[1] - length + 1].join(':'), [coords[0], coords[1] - 1].join(':')); //Shouldnt exist if 2
+          //use body[0] and body[1] later (remidning myself)
+          break;
+        case "right":
+          body = toCoords([coords[0], coords[1] + 1].join(':'), [coords[0], coords[1] + length - 1].join(':'));
+          break;
+        case "up":
+          body = toCoords([coords[0] - length + 1, coords[1]].join(':'), [coords[0] - 1, coords[1]].join(':'));
+          break;
+        case "down":
+          body = toCoords([coords[0] + 1, coords[1]].join(':'), [coords[0] + length - 1, coords[1]].join(':'));
+          break;
+      }
+      renderBoat([tip], body, actualOrien[0], lv)
   }
   switch (orientation) {
     case "left":
