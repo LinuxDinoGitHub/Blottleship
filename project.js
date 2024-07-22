@@ -548,24 +548,24 @@ function addBoat(coords, orientation, length) { // Renders and updates virtual m
     switch (orientation) {
       case "left":
         tip2 = toCoords([coords[0], coords[1] - length + 1].join(":"));
-        body = toCoords([coords[0], coords[1] - 1].join(':'), [coords[0], coords[1] - length + 2].join(':')); //Shouldnt exist if 2
+        body = toCoords([coords[0], coords[1] - 1].join(':'),[coords[0], coords[1] - length + 2].join(':')); //Shouldnt exist if 2
         //use body[0] and body[1] later (remidning myself)
         break;
       case "right":
         tip2 = toCoords([coords[0], coords[1] + length - 1].join(":"));
-        body = toCoords([coords[0], coords[1] + 1].join(':'), [coords[0], coords[1] + length - 2].join(':'));
+        body = toCoords([coords[0], coords[1] + 1].join(':'),[coords[0], coords[1] + length - 2].join(':'));
         break;
       case "up":
         tip2 = toCoords([coords[0] - length + 1, coords[1]].join(":"));
-        body = toCoords([coords[0], coords[1] - length + 2].join(':'), [coords[0], coords[1] - 1].join(':'));
+        body = toCoords([coords[0] - 1, coords[1]].join(':'), [coords[0] - length + 2, coords[1]].join(':'));
         break;
       case "down":
         tip2 = toCoords([coords[0] + length - 1, coords[1]].join(":"));
-        body = toCoords([coords[0], coords[1] + length - 2].join(':'), [coords[0], coords[1] + 1].join(':'));
+        body = toCoords([coords[0] + 1, coords[1]].join(':'),[coords[0] + length - 2, coords[1]].join(':'));
         break;
     }
     if (length <= 2) {
-      renderBoat([tip], body, actualOrien[0], lv);
+      renderBoat([tip], [body[0],body[0]], actualOrien[0], lv);
     } else {
       renderBoat([tip, tip2], body, actualOrien[0], lv)
     }
