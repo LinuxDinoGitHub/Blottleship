@@ -526,28 +526,98 @@ function toCoords(coords1, coords2 = 0){
   if(coords2 != 0){
     newCoords = []
     newCoords[0] = coords1.split(':');
-    newCoords[0][0] = alphabet[newCoords[0][0]]
+    newCoords[0][0] = alphabet[newCoords[0][0]];
+    newCoords[0][1] = parseInt(newCoords[0][1])+1;
     newCoords[1] = coords2.split(':');
-    newCoords[1][0] = alphabet[newCoords[1][0]]
+    newCoords[1][0] = alphabet[newCoords[1][0]];
+    newCoords[1][1] = parseInt(newCoords[1][1])+1;
     return [newCoords[0].join(':'),newCoords[1].join(':')];
   }
   else{
     newCoords = coords1.split(':');
     newCoords[0] = alphabet[newCoords[0]]
+    newCoords[1] = parseInt(newCoords[1])+1;
     return newCoords.join(':')
   }
 }
 function addBoat(coords, orientation, length){ // Renders and updates virtual map
   let tip, tip2, body;
+  let actualOrien = orientation == "left"? "right" : (orientation == "right"? "left" : (orientation == "up"? "down" : "up")); //Pass through the render function
   if(length < 4){
     tip = toCoords(coords.join(':'));
     console.log(tip);
+    switch(orientation){
+      case "left":
+        tip2 = toCoords([coords[0],coords[1]-length+1].join(":"));
+        body = toCoords([coords[0],coords[1]-1].join(':'),[coords[0],coords[1]-length+2].join(':'));//Shouldnt exist if 2
+        //use body[0] and body[1] later (remidning myself)
+        break;
+      case "right":
+        tip2 = toCoords([coords[0],coords[1]+length-1].join(":"));
+        body = toCoords([coords[0],coords[1]+1].join(':'),[coords[0],coords[1]+length-2].join(':'));
+        break;
+      case "up":
+        tip2 = toCoords([coords[0]-length+1,coords[1]].join(":"));
+        body = toCoords([coords[0],coords[1]-length+2].join(':'),[coords[0],coords[1]-1].join(':'));
+        break;
+      case "down":
+        tip2 = toCoords([coords[0]+length-1,coords[1]].join(":"));
+        body = toCoords([coords[0],coords[1]+length-2].join(':'),[coords[0],coords[1]+1].join(':'));
+        break;
+    }
   }
   else if(length == 4){
-    
+    if(bt.rand()<=0.5){
+      switch(orientation){ //less cool ship
+        case "left":
+          tip2 = toCoords([coords[0],coords[1]-length+1].join(":"));
+          body = toCoords([coords[0],coords[1]-1].join(':'),[coords[0],coords[1]-length+2].join(':'));//Shouldnt exist if 2
+          //use body[0] and body[1] later (remidning myself)
+          break;
+        case "right":
+          tip2 = toCoords([coords[0],coords[1]+length-1].join(":"));
+          body = toCoords([coords[0],coords[1]+1].join(':'),[coords[0],coords[1]+length-2].join(':'));
+          break;
+        case "up":
+          tip2 = toCoords([coords[0]-length+1,coords[1]].join(":"));
+          body = toCoords([coords[0],coords[1]-length+2].join(':'),[coords[0],coords[1]-1].join(':'));
+          break;
+        case "down":
+          tip2 = toCoords([coords[0]+length-1,coords[1]].join(":"));
+          body = toCoords([coords[0],coords[1]+length-2].join(':'),[coords[0],coords[1]+1].join(':'));
+          break;
+      }
+    }
+    else{ //Cool ship
+      switch(orientation){
+        case "left":
+          body = toCoords([coords[0],coords[1]-1].join(':'),[coords[0],coords[1]-length+1].join(':'));//Shouldnt exist if 2
+          //use body[0] and body[1] later (remidning myself)
+          break;
+        case "right":
+          body = toCoords([coords[0],coords[1]+1].join(':'),[coords[0],coords[1]+length-1].join(':'));
+          break;
+        case "up":
+          body = toCoords([coords[0]-length+1,coords[1]].join(':'),[coords[0]-1,coords[1]].join(':'));
+          break;
+        case "down":
+          body = toCoords([coords[0]+length-1,coords[1]].join(':'),[coords[0]+1,coords[1]].join(':'));
+          break;
+      }
+     console.log(body)
+    }
   }
   else{
-    
+    switch(orientation){
+      case "left":
+        break;
+      case "right":
+        break;
+      case "up":
+        break;
+      case "down":
+        break;
+    }
   }
   switch(orientation){
     case "left":
