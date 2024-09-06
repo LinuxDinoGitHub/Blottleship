@@ -1,3 +1,5 @@
+# Press [this link](https://blot.hackclub.com/editor?src=https://raw.githubusercontent.com/hackclub/blot/main/art/BlottleShip-LinusC/index.js) to view with the blot editor!
+
 # Introduction
 
 
